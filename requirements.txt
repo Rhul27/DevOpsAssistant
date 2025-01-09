@@ -1,0 +1,5 @@
+streamlit
+paramiko
+langchain_ollama
+requests
+sqlite3
