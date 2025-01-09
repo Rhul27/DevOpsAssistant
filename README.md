@@ -97,8 +97,6 @@ DevOpsAssistant/
 │   └── utils.py              # Utility functions
 ├── models/                   # Data models
 │   └── command_history.py    # SQLite model for command history
-├── static/                   # Static files (CSS, images)
-├── templates/                # HTML templates (if needed)
 ├── main.py                   # Streamlit app entry point
 ├── requirements.txt          # Python dependencies
 └── devops_assistant.db       # SQLite database file
