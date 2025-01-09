@@ -19,10 +19,8 @@ def fetch_models(ollama_url):
 # Define the main function for the Streamlit app
 def main():
     st.set_page_config(page_title="DevOps Assistant", page_icon="🤖", layout="wide")
-
     st.title("🤖 DevOps Assistant")
     st.markdown("Welcome to the DevOps Assistant! Connect to your server and LLM model to get started.")
-
     # Sidebar for Ollama server URL and model selection
     st.sidebar.header("🔧 Configuration")
     # Initialize ollama_url as None or an empty string
@@ -30,15 +28,20 @@ def main():
     if ollama_url:
         models = fetch_models(ollama_url)
     else:
-        # st.sidebar.warning("Please enter the Ollama Server URL to proceed.")
-        models = []  # No models available until the URL is provided
+        models = [] 
     if models:
         model_names = [model["name"] for model in models]
         selected_model = st.sidebar.selectbox("Select a Model", model_names, index=0)
     else:
         selected_model = None
 
-    # Sidebar for server connection details
+    if selected_model:
+        model = connect_to_llm(selected_model, ollama_url)
+        st.success(f"Connected to {selected_model} on Ollama Server at {ollama_url}")
+    else:
+        st.warning("No model selected. Please select a model from the dropdown menu.")
+
+   # Sidebar for server connection details
     st.sidebar.header("🔐 Server Connection")
     ip = st.sidebar.text_input("IP Address", "192.168.1.100")
     username = st.sidebar.text_input("Username", "root")
@@ -72,7 +75,7 @@ def main():
         else:
             with st.spinner("Processing your question..."):
                 try:
-                    response = ask_question_to_model(st.session_state['model'], question)
+                    response = ask_question_to_model(model, question)
                     if response:
                         st.write("📝 Response from the model:")
                         st.code(response, language="bash")
@@ -92,17 +95,17 @@ def main():
                 except Exception as e:
                     st.error(f"❌ An error occurred while asking the question: {e}")
 
-    # Display command history
-    st.header("📜 Command History")
-    history = get_command_history()
-    if history:
-        for entry in history:
-            st.write(f"**Question:** {entry[1]}")
-            st.code(entry[2], language="bash")
-            st.write(f"**Timestamp:** {entry[3]}")
-            st.write("---")
-    else:
-        st.write("No command history available.")
+    # # Display command history
+    # st.header("📜 Command History")
+    # history = get_command_history()
+    # if history:
+    #     for entry in history:
+    #         st.write(f"**Question:** {entry[1]}")
+    #         st.code(entry[2], language="bash")
+    #         st.write(f"**Timestamp:** {entry[3]}")
+    #         st.write("---")
+    # else:
+    #     st.write("No command history available.")
 
 # Run the Streamlit app
 if __name__ == "__main__":
