@@ -2,7 +2,6 @@ import streamlit as st
 import requests
 from Core.func import *
 from Core.database import get_command_history
-from Core.auth import authenticate_user
 
 # Function to fetch available models from the Ollama API
 def fetch_models(ollama_url):
@@ -14,7 +13,7 @@ def fetch_models(ollama_url):
             st.error(f"Failed to fetch models. Status code: {response.status_code}")
             return []
     except Exception as e:
-        st.error(f"An error occurred while fetching models: {e}")
+        st.error(f"Invali Ollama URL. Error: {e}")
         return []
 
 # Define the main function for the Streamlit app
@@ -26,9 +25,13 @@ def main():
 
     # Sidebar for Ollama server URL and model selection
     st.sidebar.header("🔧 Configuration")
-    ollama_url = st.sidebar.text_input("Ollama Server URL", "http://localhost:11434")
-    models = fetch_models(ollama_url)
-
+    # Initialize ollama_url as None or an empty string
+    ollama_url = st.sidebar.text_input("Ollama Server URL", placeholder="Enter Ollama Server URL (e.g., http://your-ollama-server:11434)")
+    if ollama_url:
+        models = fetch_models(ollama_url)
+    else:
+        # st.sidebar.warning("Please enter the Ollama Server URL to proceed.")
+        models = []  # No models available until the URL is provided
     if models:
         model_names = [model["name"] for model in models]
         selected_model = st.sidebar.selectbox("Select a Model", model_names, index=0)
