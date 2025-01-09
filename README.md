@@ -1,92 +1,94 @@
-DevOps Assistant 🤖
+# DevOps Assistant 🤖
+
 The DevOps Assistant is an AI-powered tool designed to help DevOps engineers and system administrators automate tasks, execute commands on remote servers, and generate accurate Bash commands using a local LLM (Large Language Model). It integrates with Streamlit for a user-friendly interface and uses SQLite for command history and caching.
 
-Features ✨
-SSH Integration: Connect to remote servers securely via SSH.
+---
 
-AI-Powered Command Generation: Use a local LLM (e.g., Ollama) to generate accurate Bash commands.
+## Features ✨
 
-Command Execution: Execute commands on remote servers and view results in real-time.
+- **SSH Integration**: Connect to remote servers securely via SSH.
+- **AI-Powered Command Generation**: Use a local LLM (e.g., Ollama) to generate accurate Bash commands.
+- **Command Execution**: Execute commands on remote servers and view results in real-time.
+- **Command History**: Store and retrieve past commands and responses for future reference.
+- **Caching Mechanism**: Cache frequently used commands to improve response times.
+- **User Authentication**: Secure access with user authentication (optional).
+- **Streamlit UI**: Intuitive and interactive web-based interface.
 
-Command History: Store and retrieve past commands and responses for future reference.
+---
 
-Caching Mechanism: Cache frequently used commands to improve response times.
+## Prerequisites 📊
 
-User Authentication: Secure access with user authentication (optional).
-
-Streamlit UI: Intuitive and interactive web-based interface.
-
-Prerequisites 📋
 Before running the DevOps Assistant, ensure you have the following installed:
 
-Python 3.8+: Download Python
+- **Python 3.8+**: [Download Python](https://www.python.org/downloads/)
+- **Ollama**: A local LLM server. [Install Ollama](https://ollama.ai)
+- **Streamlit**: For the web interface.
+- **Paramiko**: For SSH connections.
+- **SQLite3**: For database storage (included with Python).
 
-Ollama: A local LLM server. Install Ollama
+---
 
-Streamlit: For the web interface.
+## Installation 🛠️
 
-Paramiko: For SSH connections.
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/your-username/DevOpsAssistant.git
+   cd DevOpsAssistant
+   ```
 
-SQLite3: For database storage (included with Python).
+2. **Install dependencies**:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-Installation 🛠️
-Clone the repository:
+3. **Set up Ollama**:
+   
+   Install Ollama and start the server:
+   ```bash
+   ollama serve
+   ```
 
-bash
-Copy
-git clone https://github.com/your-username/DevOpsAssistant.git
-cd DevOpsAssistant
-Install dependencies:
+   Download a model (e.g., llama3.2):
+   ```bash
+   ollama pull llama3.2
+   ```
 
-bash
-Copy
-pip install -r requirements.txt
-Set up Ollama:
+4. **Run the Streamlit app**:
+   ```bash
+   streamlit run main.py
+   ```
 
-Install Ollama and start the server:
+5. **Access the app**:
+   Open your browser and navigate to [http://localhost:8501](http://localhost:8501).
 
-bash
-Copy
-ollama serve
-Download a model (e.g., llama3.2):
+---
 
-bash
-Copy
-ollama pull llama3.2
-Run the Streamlit app:
+## Usage 🚀
 
-bash
-Copy
-streamlit run main.py
-Access the app:
+### Connect to the Server:
 
-Open your browser and navigate to http://localhost:8501.
+1. Enter the server's IP address, username, and password in the sidebar.
+2. Click **"Connect to Server"**.
 
-Usage 🚀
-Connect to the Server:
+### Connect to the LLM Model:
 
-Enter the server's IP address, username, and password in the sidebar.
+1. Select a model from the dropdown in the sidebar.
+2. Click **"Connect to LLM Model"**.
 
-Click "Connect to Server".
+### Ask a Question:
 
-Connect to the LLM Model:
+1. Enter your question in the main input box (e.g., "How do I check disk usage on Linux?").
+2. Click **"Submit"** to get a response.
 
-Select a model from the dropdown in the sidebar.
+### View Command History:
 
-Click "Connect to LLM Model".
+All executed commands and responses are stored in the database and displayed in the **Command History** section.
 
-Ask a Question:
+---
 
-Enter your question in the main input box (e.g., "How do I check disk usage on Linux?").
+## Folder Structure 🗂️
 
-Click "Submit" to get a response.
-
-View Command History:
-
-All executed commands and responses are stored in the database and displayed in the Command History section.
-
-Folder Structure 📂
-Copy
+```
 DevOpsAssistant/
 ├── Core/                     # Core functionality
 │   ├── func.py               # SSH, LLM, and command execution
@@ -100,32 +102,48 @@ DevOpsAssistant/
 ├── main.py                   # Streamlit app entry point
 ├── requirements.txt          # Python dependencies
 └── devops_assistant.db       # SQLite database file
-Configuration ⚙️
-Ollama Server URL: Default is http://localhost:11434. Update in the sidebar if needed.
+```
 
-Default Model: Set to llama3.2. Change in func.py if required.
+---
 
-SSH Timeout: Default is 10 seconds. Adjust in func.py.
+## Configuration ⚙️
 
-Contributing 🤝
+- **Ollama Server URL**: Default is `http://localhost:11434`. Update in the sidebar if needed.
+- **Default Model**: Set to `llama3.2`. Change in `func.py` if required.
+- **SSH Timeout**: Default is 10 seconds. Adjust in `func.py`.
+
+---
+
+## Contributing 🤝
+
 Contributions are welcome! If you'd like to contribute, please follow these steps:
 
-Fork the repository.
+1. Fork the repository.
+2. Create a new branch:
+   ```bash
+   git checkout -b feature/YourFeatureName
+   ```
+3. Commit your changes:
+   ```bash
+   git commit -m 'Add some feature'
+   ```
+4. Push to the branch:
+   ```bash
+   git push origin feature/YourFeatureName
+   ```
+5. Open a pull request.
 
-Create a new branch (git checkout -b feature/YourFeatureName).
+---
 
-Commit your changes (git commit -m 'Add some feature').
+## License 📝
 
-Push to the branch (git push origin feature/YourFeatureName).
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
-Open a pull request.
+---
 
-License 📄
-This project is licensed under the MIT License. See the LICENSE file for details.
+## Acknowledgments 🙏
 
-Acknowledgments 🙏
-Ollama: For providing the local LLM server.
+- **Ollama**: For providing the local LLM server.
+- **Streamlit**: For the easy-to-use web interface.
+- **Paramiko**: For SSH connectivity.
 
-Streamlit: For the easy-to-use web interface.
-
-Paramiko: For SSH connectivity.
