@@ -26,6 +26,8 @@ def main():
     st.sidebar.header("🔧 Configuration")
     server_host = get_local_ip()
     st.sidebar.write(f"Server Host: {server_host}")
+    ip_host = get_public_ip()
+    st.sidebar.write(f"Public IP: {ip_host}")
     # Initialize ollama_url as None or an empty string
     ollama_url = st.sidebar.text_input("Ollama Server URL", placeholder="Enter Ollama Server URL (e.g., http://your-ollama-server:11434)")
     if ollama_url:

@@ -4,6 +4,7 @@ import paramiko
 import logging
 from typing import Optional, List, Dict, Any
 import json
+import requests
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -269,5 +270,16 @@ def get_local_ip():
         hostname = socket.gethostname()
         local_ip = socket.gethostbyname(hostname)
         return local_ip
+    except Exception as e:
+        return f"Error: {e}"
+
+
+def get_public_ip():
+    try:
+        response = requests.get("https://api.ipify.org?format=json")
+        if response.status_code == 200:
+            return response.json()["ip"]
+        else:
+            return f"Failed to fetch public IP. Status code: {response.status_code}"
     except Exception as e:
         return f"Error: {e}"
