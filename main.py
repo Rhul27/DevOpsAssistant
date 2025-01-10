@@ -63,7 +63,19 @@ def main():
                         st.sidebar.error("❌ Failed to connect to the server.")
                 except Exception as e:
                     st.sidebar.error(f"❌ An error occurred while connecting to the server: {e}")
+    if 'ssh' in st.session_state and st.session_state['ssh'] is not None:
+        st.sidebar.write(f"Connected to server: {ip}")
+    else:
+        st.sidebar.write("Not connected to the server.")
 
+    # Disconnect from the server
+    if st.sidebar.button("🚫 Disconnect from Server"):
+        if 'ssh' in st.session_state and st.session_state['ssh'] is not None:
+            st.session_state['ssh'].close()
+            st.session_state['ssh'] = None
+            st.sidebar.success("Disconnected from the server.")
+        else:
+            st.sidebar.warning("Not connected to the server.")
     # Main content area
     st.header("💬 Ask a Question")
     question = st.text_input("Enter your question:", placeholder="e.g., How do I check disk usage on Linux?")
@@ -71,7 +83,8 @@ def main():
     if st.button("🚀 Submit"):
         if not question:
             st.error("Please enter a question.")
-        elif ssh is None or model is None:
+        # elif 'ssh' not in st.session_state or 'model' not in st.session_state:
+        elif model is None:
             st.error("Please connect to both the server and the LLM model first.")
         else:
             with st.spinner("Processing your question..."):
@@ -81,7 +94,7 @@ def main():
                         st.write("📝 Response from the model:")
                         st.code(response, language="bash")
                         try:
-                            results = extract_and_execute_commands(response, ssh)
+                            results = extract_and_execute_commands(response, st.session_state['ssh'])
                             st.success("✅ Command execution completed.")
                             st.write("📊 Command Execution Summary:")
                             for i, result in enumerate(results, start=1):
