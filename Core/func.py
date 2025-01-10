@@ -8,6 +8,7 @@ import json
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+paramiko.common.logging.basicConfig(level=paramiko.common.DEBUG)
 
 # Constants
 DEFAULT_OLLAMA_URL = "http://localhost:11434"
@@ -29,7 +30,7 @@ class InvalidResponseError(Exception):
     pass
 
 
-def connect_to_server(ip: str, username: str, password: str, timeout: int = DEFAULT_SSH_TIMEOUT) -> paramiko.SSHClient:
+def connect_to_server(ip: str, username: str, password: str, timeout: int = DEFAULT_SSH_TIMEOUT, port: int = 22) -> paramiko.SSHClient:
     """
     Connect to the server via SSH with error handling and timeout.
 
@@ -45,10 +46,16 @@ def connect_to_server(ip: str, username: str, password: str, timeout: int = DEFA
     Raises:
         SSHConnectionError: If the connection fails.
     """
+    # ssh = paramiko.SSHClient()
+    # ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    # try:
+    #     ssh.connect(hostname=ip, username=username, password=password, timeout=timeout)
+    #     logger.info(f"Connected to {ip} as {username}")
+    #     return ssh
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     try:
-        ssh.connect(hostname=ip, username=username, password=password, timeout=timeout)
+        ssh.connect(hostname=ip, username=username, password=password, timeout=timeout, port=port)
         logger.info(f"Connected to {ip} as {username}")
         return ssh
     except Exception as e:
