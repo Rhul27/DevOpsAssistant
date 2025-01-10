@@ -70,7 +70,7 @@ def main():
     if st.button("🚀 Submit"):
         if not question:
             st.error("Please enter a question.")
-        elif 'ssh' not in st.session_state or 'model' not in st.session_state:
+        elif 'ssh' not in st.session_state or model is None:
             st.error("Please connect to both the server and the LLM model first.")
         else:
             with st.spinner("Processing your question..."):
