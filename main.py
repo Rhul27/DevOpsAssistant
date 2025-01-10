@@ -18,6 +18,7 @@ def fetch_models(ollama_url):
 
 # Define the main function for the Streamlit app
 def main():
+    ssh = None
     st.set_page_config(page_title="DevOps Assistant", page_icon="🤖", layout="wide")
     st.title("🤖 DevOps Assistant")
     st.markdown("Welcome to the DevOps Assistant! Connect to your server and LLM model to get started.")
