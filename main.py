@@ -24,6 +24,8 @@ def main():
     st.markdown("Welcome to the DevOps Assistant! Connect to your server and LLM model to get started.")
     # Sidebar for Ollama server URL and model selection
     st.sidebar.header("🔧 Configuration")
+    server_host = get_local_ip()
+    st.sidebar.write(f"Server Host: {server_host}")
     # Initialize ollama_url as None or an empty string
     ollama_url = st.sidebar.text_input("Ollama Server URL", placeholder="Enter Ollama Server URL (e.g., http://your-ollama-server:11434)")
     if ollama_url:
@@ -67,6 +69,30 @@ def main():
         st.sidebar.write(f"Connected to server: {ip}")
     else:
         st.sidebar.write("Not connected to the server.")
+
+    # Button to switch to root user
+    # if 'ssh' in st.session_state and st.session_state['ssh'] is not None:
+    #     st.sidebar.header("🛠️ Root Access")
+    #     if st.sidebar.button("🔑 Switch to Root User"):
+    #         with st.spinner("Switching to root user..."):
+    #             try:
+    #                 become_root_user(ssh, password)
+    #             except Exception as e:
+    #                 st.error(f"Failed to switch to root user: {e}")
+
+    # Button to switch to root user
+    if 'ssh' in st.session_state and st.session_state['ssh'] is not None:
+        st.sidebar.header("🛠️ Root Access")
+        if st.sidebar.button("🔑 Switch to Root User"):
+            with st.spinner("Switching to root user..."):
+                try:
+                    if st.session_state['ssh'] is None:
+                        st.error("SSH connection is not established. Please connect to the server first.")
+                    else:
+                        become_root_user(st.session_state['ssh'], password)
+                        st.success("Successfully switched to root user!")
+                except Exception as e:
+                    st.error(f"Failed to switch to root user: {e}")
 
     # Disconnect from the server
     if st.sidebar.button("🚫 Disconnect from Server"):

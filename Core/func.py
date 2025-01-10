@@ -74,16 +74,19 @@ def become_root_user(ssh: paramiko.SSHClient, password: str) -> None:
         CommandExecutionError: If switching to root fails.
     """
     try:
-        stdin, stdout, stderr = ssh.exec_command("sudo -s")
+        stdin, stdout, stderr = ssh.exec_command("sudo su")
         stdin.write(f"{password}\n")
         stdin.flush()
+        print(password)
         exit_status = stdout.channel.recv_exit_status()
         if exit_status != 0:
             error = stderr.read().decode().strip()
             raise CommandExecutionError(f"Failed to switch to root user: {error}")
         logger.info("Switched to root user.")
+        return ssh
     except Exception as e:
         logger.error(f"Failed to switch to root user: {e}")
+        print(e)
         raise CommandExecutionError(f"Root user switch failed: {e}")
 
 def connect_to_llm(model_name: str = DEFAULT_MODEL, ollama_url: str = DEFAULT_OLLAMA_URL) -> OllamaLLM:
@@ -257,3 +260,14 @@ def generate_command_summary(results: List[Dict[str, Any]]) -> str:
         summary += f"  Error: {result.get('error', 'No error')}\n"
         summary += f"  Exit Status: {result.get('exit_status', 'Unknown')}\n"
     return summary
+
+
+import socket
+
+def get_local_ip():
+    try:
+        hostname = socket.gethostname()
+        local_ip = socket.gethostbyname(hostname)
+        return local_ip
+    except Exception as e:
+        return f"Error: {e}"
