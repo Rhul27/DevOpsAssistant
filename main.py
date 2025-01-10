@@ -70,7 +70,7 @@ def main():
     if st.button("🚀 Submit"):
         if not question:
             st.error("Please enter a question.")
-        elif 'ssh' not in st.session_state or model is None:
+        elif ssh is None or model is None:
             st.error("Please connect to both the server and the LLM model first.")
         else:
             with st.spinner("Processing your question..."):
@@ -80,7 +80,7 @@ def main():
                         st.write("📝 Response from the model:")
                         st.code(response, language="bash")
                         try:
-                            results = extract_and_execute_commands(response, st.session_state['ssh'])
+                            results = extract_and_execute_commands(response, ssh)
                             st.success("✅ Command execution completed.")
                             st.write("📊 Command Execution Summary:")
                             for i, result in enumerate(results, start=1):
